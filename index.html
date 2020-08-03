@@ -59,7 +59,7 @@
 
         //compile all data values for y-axis
         compiledData = popChngList(neChng).concat(popChngList(mwChng).concat(popChngList(sChng).concat(popChngList(wChng))));
-        compiledData.sort();
+        compiledData.sort((a, b) => a - b);
 
         //draw the axes
         var x = d3.scaleBand().domain(years).range([0, width-margin]);
@@ -110,16 +110,16 @@
                 textAnnotation = "2010";
             }
             else if (currYear == 1) {
-                textAnnotation = "2011: All regions except for the West region had decreasing rate of population change";
+                textAnnotation = "2011: All regions have an initial increasing rate of population change";
             }
             else if (currYear == 2) {
-                textAnnotation = "2012";
+                textAnnotation = "2012: South and West regions continue to increase while the others decrease in rate";
             }
             else if (currYear == 3) {
                 textAnnotation = "2013";
             }
             else if (currYear == 4) {
-                textAnnotation = "2014: Northeast continues a decreasing rate of population change while others fluctuate";
+                textAnnotation = "2014: Trendlines start to diverage and the difference in rates begin to look more drastic";
             }
             else if (currYear == 5) {
                 textAnnotation = "2015";
@@ -128,13 +128,13 @@
                 textAnnotation = "2016: Donald Trump is elected president";
             }
             else if (currYear == 7) {
-                textAnnotation = "2017: Rate of population increase begins to sharply decline and continue to do so into 2018";
+                textAnnotation = "2017: Rate of population increase begins to flatten slightly before falling in 2018";
             }
             else if (currYear == 8) {
                 textAnnotation = "2018: First occurrence of a population being less than in the year prior shows in the Northeast";
             }
             else if (currYear == 9) {
-                textAnnotation = "2019: Midwest shows a huge spike suggesting movement from the Northeast to the Midwest";
+                textAnnotation = "2019: The South region consistently shows the highest rate of population increase";
             }
             svg.select("#text0").remove();
             svg.append("g")

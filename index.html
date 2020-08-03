@@ -104,21 +104,49 @@
         //remove tick lines beforhand because scrolling through button presses clears and redraws all lines
         svg.selectAll("line").remove();
 
-        //create buttons to control the trendline drawings
-        currYear = 0;
-        var nextButton = document.createElement("BUTTON");
-        nextButton.innerHTML = "Go Forward One Year";
-        document.body.appendChild(nextButton);
-        nextButton.onclick = function() {
-            svg.selectAll("line").remove();
-            if (currYear < 9) {
-                currYear++;
+        //add annotation that changes based on year selected
+        function addAnnotation(dataSet, currYear) {
+            if (currYear == 0) {
+                textAnnotation = "2010";
             }
-            drawTrend(neChng, "blue", currYear);
-            drawTrend(mwChng, "yellow", currYear);
-            drawTrend(sChng, "red", currYear);
-            drawTrend(wChng, "green", currYear);
-        };
+            else if (currYear == 1) {
+                textAnnotation = "2011: All regions except for the West region had decreasing rate of population change";
+            }
+            else if (currYear == 2) {
+                textAnnotation = "2012";
+            }
+            else if (currYear == 3) {
+                textAnnotation = "2013";
+            }
+            else if (currYear == 4) {
+                textAnnotation = "2014: Northeast continues a decreasing rate of population change while others fluctuate";
+            }
+            else if (currYear == 5) {
+                textAnnotation = "2015";
+            }
+            else if (currYear == 6) {
+                textAnnotation = "2016: Donald Trump is elected president";
+            }
+            else if (currYear == 7) {
+                textAnnotation = "2017: Rate of population increase begins to sharply decline and continue to do so into 2018";
+            }
+            else if (currYear == 8) {
+                textAnnotation = "2018: First occurrence of a population being less than in the year prior shows in the Northeast";
+            }
+            else if (currYear == 9) {
+                textAnnotation = "2019: Midwest shows a huge spike suggesting movement from the Northeast to the Midwest";
+            }
+            svg.select("#text0").remove();
+            svg.append("g")
+                .attr("transform", "translate(" + (margin+10) + "," + 10 + ")")
+                .selectAll("text").data(dataSet)
+                .enter()
+                .append("text")
+                .text(textAnnotation)
+                .attr("id", function(d,i){ return "text" + i}) //unique id is #text0 because the index is 0
+                .attr("color", "black")
+                .attr("font-size", 15);
+        }
 
         var prevButton = document.createElement("BUTTON");
         prevButton.innerHTML = "Go Backwards One Year";
@@ -132,6 +160,61 @@
             drawTrend(mwChng, "yellow", currYear);
             drawTrend(sChng, "red", currYear);
             drawTrend(wChng, "green", currYear);
+
+            addAnnotation([0], currYear);
+
+        };
+
+        //create buttons to control the trendline drawings
+        currYear = 0;
+        var nextButton = document.createElement("BUTTON");
+        nextButton.innerHTML = "Go Forwards One Year";
+        document.body.appendChild(nextButton);
+        nextButton.onclick = function() {
+            svg.selectAll("line").remove();
+            if (currYear < 9) {
+                currYear++;
+            }
+            drawTrend(neChng, "blue", currYear);
+            drawTrend(mwChng, "yellow", currYear);
+            drawTrend(sChng, "red", currYear);
+            drawTrend(wChng, "green", currYear);
+
+            addAnnotation([0], currYear);
+
+        };
+
+
+        //button to select specific or all trendlines
+        cycle = 0;
+        var cycleButton = document.createElement("BUTTON");
+        cycleButton.innerHTML = "Cycle Between Trendlines";
+        document.body.appendChild(cycleButton);
+        cycleButton.onclick = function() {
+            svg.selectAll("line").remove();
+            cycle++;
+            if (cycle == 5) {
+                cycle = 0;
+            }
+            if (cycle == 0) { //show all lines
+            drawTrend(neChng, "blue", currYear);
+            drawTrend(mwChng, "yellow", currYear);
+            drawTrend(sChng, "red", currYear);
+            drawTrend(wChng, "green", currYear);
+            }
+            else if (cycle == 1) { //show NE line
+            drawTrend(neChng, "blue", currYear);
+            }
+            else if (cycle == 2) { //show MW line
+            drawTrend(mwChng, "yellow", currYear);
+            }
+            else if (cycle == 3) { //show S line
+            drawTrend(sChng, "red", currYear);
+            }
+            else if (cycle == 4) { //show W line
+            drawTrend(wChng, "green", currYear);
+            }
+
         };
 
 
